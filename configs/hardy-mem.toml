@@ -1,0 +1,27 @@
+# BPA with inline TCPCL — memory storage (ephemeral)
+
+log-level = "info"
+node-ids = ["ipn:1.0"]
+status-reports = true
+
+[grpc]
+address = "[::]:50051"
+services = ["application", "cla", "service"]
+
+[rfc9171-validity]
+primary-block-integrity = true
+bundle-age-required = true
+
+[built-in-services]
+echo = [7, "echo"]
+
+[[clas]]
+name = "tcp-cla-1"
+type = "tcpclv4"
+address = "[::]:4556"
+segment-mru = 16384
+transfer-mru = 562949953421312
+max-idle-connections = 6
+contact-timeout = 15
+keepalive-interval = 60
+require-tls = false

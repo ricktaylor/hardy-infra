@@ -1,0 +1,545 @@
+{
+  "uid": "hardy-bpa-overview",
+  "title": "Hardy BPA Overview",
+  "description": "Bundle Processing Agent metrics from OpenTelemetry",
+  "tags": ["hardy", "bpa", "dtn"],
+  "timezone": "browser",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "refresh": "10s",
+  "schemaVersion": 39,
+  "time": { "from": "now-30m", "to": "now" },
+  "timepicker": {},
+  "templating": { "list": [] },
+  "annotations": { "list": [] },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "Received / s",
+      "gridPos": { "x": 0, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "targets": [{
+        "expr": "rate(bpa_bundle_received_total[5m])",
+        "legendFormat": "received",
+        "refId": "A"
+      }]
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Originated / s",
+      "gridPos": { "x": 4, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "targets": [{
+        "expr": "rate(bpa_bundle_originated_total[5m])",
+        "legendFormat": "originated",
+        "refId": "A"
+      }]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Delivered / s",
+      "gridPos": { "x": 8, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "purple", "value": null }] },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "targets": [{
+        "expr": "rate(bpa_bundle_delivered_total[5m])",
+        "legendFormat": "delivered",
+        "refId": "A"
+      }]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Forwarded / s",
+      "gridPos": { "x": 12, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "orange", "value": null }] },
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "targets": [{
+        "expr": "rate(bpa_bundle_forwarded_total[5m])",
+        "legendFormat": "forwarded",
+        "refId": "A"
+      }]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Dropped / s",
+      "gridPos": { "x": 16, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "green", "value": null },
+            { "color": "yellow", "value": 0.1 },
+            { "color": "red", "value": 1 }
+          ]},
+          "unit": "ops"
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "targets": [{
+        "expr": "sum(rate(bpa_bundle_dropped_total[5m]))",
+        "legendFormat": "dropped",
+        "refId": "A"
+      }]
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Pipeline Bundles",
+      "gridPos": { "x": 20, "y": 0, "w": 4, "h": 4 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": { "mode": "absolute", "steps": [
+            { "color": "green", "value": null },
+            { "color": "yellow", "value": 100 },
+            { "color": "red", "value": 1000 }
+          ]},
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "textMode": "auto" },
+      "targets": [{
+        "expr": "sum(bpa_bundle_status)",
+        "legendFormat": "in pipeline",
+        "refId": "A"
+      }]
+    },
+
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "Bundle Rate",
+      "description": "Bundles processed per second by lifecycle event",
+      "gridPos": { "x": 0, "y": 4, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "ops", "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10, "pointSize": 5, "showPoints": "auto" } },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "expr": "rate(bpa_bundle_received_total[5m])", "legendFormat": "received", "refId": "A" },
+        { "expr": "rate(bpa_bundle_originated_total[5m])", "legendFormat": "originated", "refId": "B" },
+        { "expr": "rate(bpa_bundle_delivered_total[5m])", "legendFormat": "delivered", "refId": "C" },
+        { "expr": "rate(bpa_bundle_forwarded_total[5m])", "legendFormat": "forwarded", "refId": "D" },
+        { "expr": "sum(rate(bpa_bundle_dropped_total[5m]))", "legendFormat": "dropped", "refId": "E" }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "timeseries",
+      "title": "Data Throughput",
+      "description": "Bundle data bytes per second",
+      "gridPos": { "x": 12, "y": 4, "w": 12, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "Bps", "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10 } },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "expr": "rate(bpa_bundle_received_bytes_total[5m])", "legendFormat": "received", "refId": "A" },
+        { "expr": "rate(bpa_bundle_originated_bytes_total[5m])", "legendFormat": "originated", "refId": "B" }
+      ]
+    },
+
+    {
+      "id": 20,
+      "type": "row",
+      "title": "Pipeline Status",
+      "gridPos": { "x": 0, "y": 12, "w": 24, "h": 1 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 21,
+      "type": "timeseries",
+      "title": "Bundles by Pipeline State",
+      "description": "Current bundles in each processing state",
+      "gridPos": { "x": 0, "y": 13, "w": 16, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "short", "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 20, "stacking": { "mode": "normal" } } },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "expr": "bpa_bundle_status{state=\"received\"}", "legendFormat": "received", "refId": "A" },
+        { "expr": "bpa_bundle_status{state=\"dispatching\"}", "legendFormat": "dispatching", "refId": "B" },
+        { "expr": "bpa_bundle_status{state=\"forward_pending\"}", "legendFormat": "forward pending", "refId": "C" },
+        { "expr": "bpa_bundle_status{state=\"waiting\"}", "legendFormat": "waiting", "refId": "D" },
+        { "expr": "bpa_bundle_status{state=\"waiting_for_service\"}", "legendFormat": "waiting for service", "refId": "E" },
+        { "expr": "bpa_bundle_status{state=\"fragment\"}", "legendFormat": "fragment", "refId": "F" }
+      ]
+    },
+    {
+      "id": 22,
+      "type": "bargauge",
+      "title": "Current Pipeline State",
+      "gridPos": { "x": 16, "y": 13, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "color": { "mode": "palette-classic" },
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] }
+        },
+        "overrides": []
+      },
+      "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "orientation": "horizontal", "displayMode": "gradient", "showUnfilled": true },
+      "targets": [{
+        "expr": "bpa_bundle_status",
+        "legendFormat": "{{state}}",
+        "refId": "A"
+      }]
+    },
+
+    {
+      "id": 30,
+      "type": "row",
+      "title": "Drops & Failures",
+      "gridPos": { "x": 0, "y": 21, "w": 24, "h": 1 },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 31,
+      "type": "timeseries",
+      "title": "Bundle Drops by Reason",
+      "description": "Rate of dropped bundles broken down by RFC 9171 reason code",
+      "gridPos": { "x": 0, "y": 22, "w": 16, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "ops", "custom": { "drawStyle": "line", "lineWidth": 1, "fillOpacity": 10, "stacking": { "mode": "normal" } } },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [{
+        "expr": "rate(bpa_bundle_dropped_total[5m]) > 0",
+        "legendFormat": "{{reason}}",
+        "refId": "A"
+      }]
+    },
+    {
+      "id": 32,
+      "type": "timeseries",
+      "title": "Reception Errors",
+      "description": "Bundles dropped or duplicated at reception, and forwarding failures",
+      "gridPos": { "x": 16, "y": 22, "w": 8, "h": 8 },
+      "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+      "fieldConfig": {
+        "defaults": { "unit": "ops", "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10 } },
+        "overrides": []
+      },
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "expr": "rate(bpa_bundle_received_dropped_total[5m])", "legendFormat": "rx dropped", "refId": "A" },
+        { "expr": "rate(bpa_bundle_received_duplicate_total[5m])", "legendFormat": "rx duplicate", "refId": "B" },
+        { "expr": "rate(bpa_bundle_forwarding_failed_total[5m])", "legendFormat": "fwd failed", "refId": "C" }
+      ]
+    },
+
+    {
+      "id": 40,
+      "type": "row",
+      "title": "Filters",
+      "gridPos": { "x": 0, "y": 30, "w": 24, "h": 1 },
+      "collapsed": true,
+      "panels": [
+        {
+          "id": 41,
+          "type": "timeseries",
+          "title": "Filter Activity by Hook",
+          "description": "Filter operations (filtered, modified, error) broken down by hook point",
+          "gridPos": { "x": 0, "y": 31, "w": 24, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": {
+            "defaults": { "unit": "ops", "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10 } },
+            "overrides": []
+          },
+          "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["sum"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+          "targets": [
+            { "expr": "rate(bpa_filter_filtered_total[5m])", "legendFormat": "filtered ({{hook}})", "refId": "A" },
+            { "expr": "rate(bpa_filter_modified_total[5m])", "legendFormat": "modified ({{hook}})", "refId": "B" },
+            { "expr": "rate(bpa_filter_error_total[5m])", "legendFormat": "error ({{hook}})", "refId": "C" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": 50,
+      "type": "row",
+      "title": "Storage",
+      "gridPos": { "x": 0, "y": 31, "w": 24, "h": 1 },
+      "collapsed": true,
+      "panels": [
+        {
+          "id": 51,
+          "type": "gauge",
+          "title": "Cache Hit Ratio",
+          "description": "Ratio of cache hits to total cache lookups",
+          "gridPos": { "x": 0, "y": 32, "w": 6, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": {
+            "defaults": {
+              "unit": "percentunit",
+              "min": 0, "max": 1,
+              "thresholds": { "mode": "absolute", "steps": [
+                { "color": "red", "value": null },
+                { "color": "yellow", "value": 0.5 },
+                { "color": "green", "value": 0.8 }
+              ]}
+            },
+            "overrides": []
+          },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdMarkers": true, "showThresholdLabels": false },
+          "targets": [{
+            "expr": "rate(bpa_store_cache_hits_total[5m]) / (rate(bpa_store_cache_hits_total[5m]) + rate(bpa_store_cache_misses_total[5m]) + rate(bpa_store_cache_oversized_total[5m]) > 0)",
+            "legendFormat": "hit ratio",
+            "refId": "A"
+          }]
+        },
+        {
+          "id": 52,
+          "type": "timeseries",
+          "title": "Cache Operations",
+          "gridPos": { "x": 6, "y": 32, "w": 9, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": {
+            "defaults": { "unit": "ops", "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10 } },
+            "overrides": []
+          },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+          "targets": [
+            { "expr": "rate(bpa_store_cache_hits_total[5m])", "legendFormat": "hits", "refId": "A" },
+            { "expr": "rate(bpa_store_cache_misses_total[5m])", "legendFormat": "misses", "refId": "B" },
+            { "expr": "rate(bpa_store_cache_oversized_total[5m])", "legendFormat": "oversized", "refId": "C" }
+          ]
+        },
+        {
+          "id": 53,
+          "type": "timeseries",
+          "title": "Memory Store",
+          "gridPos": { "x": 15, "y": 32, "w": 9, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": {
+            "defaults": { "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10 } },
+            "overrides": [
+              { "matcher": { "id": "byName", "options": "bytes" }, "properties": [{ "id": "unit", "value": "bytes" }, { "id": "custom.axisPlacement", "value": "right" }] },
+              { "matcher": { "id": "byName", "options": "bundles" }, "properties": [{ "id": "unit", "value": "short" }] },
+              { "matcher": { "id": "byName", "options": "metadata" }, "properties": [{ "id": "unit", "value": "short" }] }
+            ]
+          },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+          "targets": [
+            { "expr": "bpa_mem_store_bundles", "legendFormat": "bundles", "refId": "A" },
+            { "expr": "bpa_mem_store_bytes", "legendFormat": "bytes", "refId": "B" },
+            { "expr": "bpa_mem_metadata_entries", "legendFormat": "metadata", "refId": "C" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": 60,
+      "type": "row",
+      "title": "Infrastructure",
+      "gridPos": { "x": 0, "y": 32, "w": 24, "h": 1 },
+      "collapsed": true,
+      "panels": [
+        {
+          "id": 61,
+          "type": "stat",
+          "title": "CLAs",
+          "gridPos": { "x": 0, "y": 33, "w": 4, "h": 4 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": { "defaults": { "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] } }, "overrides": [] },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none", "textMode": "auto" },
+          "targets": [{ "expr": "bpa_cla_registered", "legendFormat": "CLAs", "refId": "A" }]
+        },
+        {
+          "id": 62,
+          "type": "stat",
+          "title": "Services",
+          "gridPos": { "x": 4, "y": 33, "w": 4, "h": 4 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": { "defaults": { "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "blue", "value": null }] } }, "overrides": [] },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none", "textMode": "auto" },
+          "targets": [{ "expr": "bpa_service_registered", "legendFormat": "Services", "refId": "A" }]
+        },
+        {
+          "id": 63,
+          "type": "stat",
+          "title": "Routing Agents",
+          "gridPos": { "x": 8, "y": 33, "w": 4, "h": 4 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": { "defaults": { "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "purple", "value": null }] } }, "overrides": [] },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none", "textMode": "auto" },
+          "targets": [{ "expr": "bpa_rib_agents", "legendFormat": "Agents", "refId": "A" }]
+        },
+        {
+          "id": 64,
+          "type": "stat",
+          "title": "RIB Entries",
+          "gridPos": { "x": 12, "y": 33, "w": 4, "h": 4 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": { "defaults": { "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "orange", "value": null }] } }, "overrides": [] },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none", "textMode": "auto" },
+          "targets": [{ "expr": "sum(bpa_rib_entries)", "legendFormat": "RIB", "refId": "A" }]
+        },
+        {
+          "id": 65,
+          "type": "stat",
+          "title": "FIB Entries",
+          "gridPos": { "x": 16, "y": 33, "w": 4, "h": 4 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": { "defaults": { "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "orange", "value": null }] } }, "overrides": [] },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none", "textMode": "auto" },
+          "targets": [{ "expr": "sum(bpa_fib_entries)", "legendFormat": "FIB", "refId": "A" }]
+        },
+        {
+          "id": 66,
+          "type": "stat",
+          "title": "Filters",
+          "gridPos": { "x": 20, "y": 33, "w": 4, "h": 4 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": { "defaults": { "unit": "short", "thresholds": { "mode": "absolute", "steps": [{ "color": "green", "value": null }] } }, "overrides": [] },
+          "options": { "reduceOptions": { "calcs": ["lastNotNull"] }, "colorMode": "value", "graphMode": "none", "textMode": "auto" },
+          "targets": [{ "expr": "sum(bpa_filter_registered)", "legendFormat": "Filters", "refId": "A" }]
+        },
+        {
+          "id": 67,
+          "type": "timeseries",
+          "title": "RIB / FIB Entries Over Time",
+          "gridPos": { "x": 0, "y": 37, "w": 24, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": {
+            "defaults": { "unit": "short", "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10 } },
+            "overrides": []
+          },
+          "options": { "legend": { "displayMode": "table", "placement": "right", "calcs": ["lastNotNull"] }, "tooltip": { "mode": "multi", "sort": "desc" } },
+          "targets": [
+            { "expr": "bpa_rib_entries", "legendFormat": "RIB ({{source}})", "refId": "A" },
+            { "expr": "bpa_fib_entries", "legendFormat": "FIB ({{cla}})", "refId": "B" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": 70,
+      "type": "row",
+      "title": "Administrative Records & Status Reports",
+      "gridPos": { "x": 0, "y": 33, "w": 24, "h": 1 },
+      "collapsed": true,
+      "panels": [
+        {
+          "id": 71,
+          "type": "timeseries",
+          "title": "Status Reports",
+          "gridPos": { "x": 0, "y": 34, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": {
+            "defaults": { "unit": "ops", "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10 } },
+            "overrides": []
+          },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+          "targets": [
+            { "expr": "rate(bpa_status_report_sent_total[5m])", "legendFormat": "sent ({{type}})", "refId": "A" },
+            { "expr": "rate(bpa_status_report_received_total[5m])", "legendFormat": "received ({{type}})", "refId": "B" }
+          ]
+        },
+        {
+          "id": 72,
+          "type": "timeseries",
+          "title": "Administrative Records",
+          "gridPos": { "x": 12, "y": 34, "w": 12, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": {
+            "defaults": { "unit": "ops", "custom": { "drawStyle": "line", "lineWidth": 2, "fillOpacity": 10 } },
+            "overrides": []
+          },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+          "targets": [
+            { "expr": "rate(bpa_admin_record_received_total[5m])", "legendFormat": "received", "refId": "A" },
+            { "expr": "rate(bpa_admin_record_unknown_total[5m])", "legendFormat": "unknown", "refId": "B" }
+          ]
+        }
+      ]
+    },
+
+    {
+      "id": 80,
+      "type": "row",
+      "title": "Restart Recovery",
+      "gridPos": { "x": 0, "y": 34, "w": 24, "h": 1 },
+      "collapsed": true,
+      "panels": [
+        {
+          "id": 81,
+          "type": "timeseries",
+          "title": "Restart Recovery",
+          "description": "Anomalies discovered during BPA restart/crash recovery",
+          "gridPos": { "x": 0, "y": 35, "w": 24, "h": 8 },
+          "datasource": { "type": "prometheus", "uid": "PBFA97CFB590B2093" },
+          "fieldConfig": {
+            "defaults": { "unit": "short", "custom": { "drawStyle": "bars", "lineWidth": 1, "fillOpacity": 50 } },
+            "overrides": []
+          },
+          "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+          "targets": [
+            { "expr": "increase(bpa_restart_lost_total[5m])", "legendFormat": "lost", "refId": "A" },
+            { "expr": "increase(bpa_restart_duplicate_total[5m])", "legendFormat": "duplicate", "refId": "B" },
+            { "expr": "increase(bpa_restart_orphan_total[5m])", "legendFormat": "orphan", "refId": "C" },
+            { "expr": "increase(bpa_restart_junk_total[5m])", "legendFormat": "junk", "refId": "D" }
+          ]
+        }
+      ]
+    }
+  ]
+}

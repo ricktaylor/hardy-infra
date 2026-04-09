@@ -1,0 +1,12 @@
+# Standalone TCPCL v4 server — connects to BPA via gRPC
+
+bpa-address = "http://hardy:50051"
+cla-name = "tcp-cla-2"
+log-level = "info"
+address = "[::]:4556"
+segment-mru = 16384
+transfer-mru = 562949953421312
+max-idle-connections = 6
+contact-timeout = 15
+keepalive-interval = 60
+require-tls = false

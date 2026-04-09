@@ -1,0 +1,74 @@
+# Hardy BPA Server — In-memory storage (ephemeral)
+#
+# Usage:
+#   docker compose -f compose.mem.yml up                     # BPA + embedded TCPCL
+#   docker compose -f compose.mem.yml --profile tcpcl up     # adds standalone TCPCL
+
+services:
+  hardy:
+    image: ghcr.io/ricktaylor/hardy/hardy-bpa-server:latest
+    restart: unless-stopped
+    ports:
+      - "50051:50051"
+      - "4556:4556"
+    environment:
+      HARDY_BPA_SERVER_CONFIG_FILE: /etc/hardy/hardy.toml
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+    volumes:
+      - ./configs/hardy-mem.toml:/etc/hardy/hardy.toml:ro
+    healthcheck:
+      test: ["CMD", "/bin/grpc_health_probe", "-addr=127.0.0.1:50051"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 10s
+
+  hardy-tcpcl:
+    image: ghcr.io/ricktaylor/hardy/hardy-tcpclv4-server:latest
+    profiles: [tcpcl]
+    restart: unless-stopped
+    ports:
+      - "4557:4556"
+    environment:
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
+    volumes:
+      - ./configs/hardy-tcpcl.toml:/etc/hardy/tcpcl.toml:ro
+    command: ["--config", "/etc/hardy/tcpcl.toml"]
+    depends_on:
+      hardy:
+        condition: service_healthy
+
+  otel-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    restart: unless-stopped
+    volumes:
+      - ./otel-collector.yml:/etc/otelcol-contrib/config.yaml:ro
+    ports:
+      - "4317:4317"
+
+  prometheus:
+    image: prom/prometheus:latest
+    restart: unless-stopped
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./grafana/datasources.yml:/etc/grafana/provisioning/datasources/datasources.yml:ro
+      - ./grafana/dashboards.yml:/etc/grafana/provisioning/dashboards/dashboards.yml:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+
+volumes:
+  prometheus-data:
+  grafana-data:
