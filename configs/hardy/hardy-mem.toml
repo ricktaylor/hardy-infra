@@ -1,7 +1,7 @@
 # BPA with inline TCPCL — memory storage (ephemeral)
 
 log-level = "info"
-node-ids = ["ipn:1.0"]
+node-ids = ["ipn:1.0", "dtn://hardy/"]
 status-reports = true
 
 [grpc]

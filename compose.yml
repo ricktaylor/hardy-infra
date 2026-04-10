@@ -2,23 +2,24 @@
 #
 # Usage:
 #   docker compose up                     # BPA + embedded TCPCL
-#   docker compose --profile tcpcl up     # adds standalone TCPCL
+#   docker compose --profile tcpcl up     # BPA + standalone TCPCL
 
 services:
   hardy:
     image: ghcr.io/ricktaylor/hardy/hardy-bpa-server:latest
     restart: unless-stopped
-    ports:
-      - "50051:50051"
-      - "4556:4556"
+    command: ["-u"]
     environment:
       HARDY_BPA_SERVER_CONFIG_FILE: /etc/hardy/hardy.toml
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
       AWS_ACCESS_KEY_ID: minioadmin
       AWS_SECRET_ACCESS_KEY: minioadmin
       AWS_DEFAULT_REGION: us-east-1
+    ports:
+      - "50051:50051"
+      - "4556:4556"
     volumes:
-      - ./configs/hardy.toml:/etc/hardy/hardy.toml:ro
+      - ./configs/hardy/hardy.toml:/etc/hardy/hardy.toml:ro
       - bundles:/var/lib/hardy/bundles
     healthcheck:
       test: ["CMD", "/bin/grpc_health_probe", "-addr=127.0.0.1:50051"]
@@ -37,11 +38,11 @@ services:
     profiles: [tcpcl]
     restart: unless-stopped
     ports:
-      - "4557:4556"
+      - "4556:4556"
     environment:
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
     volumes:
-      - ./configs/hardy-tcpcl.toml:/etc/hardy/tcpcl.toml:ro
+      - ./configs/tcpcl/tcpcl.toml:/etc/hardy/tcpcl.toml:ro
     command: ["--config", "/etc/hardy/tcpcl.toml"]
     depends_on:
       hardy:
@@ -95,7 +96,7 @@ services:
     image: otel/opentelemetry-collector-contrib:latest
     restart: unless-stopped
     volumes:
-      - ./otel-collector.yml:/etc/otelcol-contrib/config.yaml:ro
+      - ./configs/otel/otel-collector.yml:/etc/otelcol-contrib/config.yaml:ro
     ports:
       - "4317:4317"
 
@@ -103,7 +104,7 @@ services:
     image: prom/prometheus:latest
     restart: unless-stopped
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./configs/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
 
   grafana:
