@@ -39,22 +39,26 @@ docker compose -f compose.mem.yml --profile tcpcl up
 The embedded TCPCL (`tcp-cla-1`) listens on port **4556**.
 The standalone TCPCL (`tcp-cla-2`) listens on port **4557**.
 
-To disable the embedded TCPCL when using standalone, comment out the
-`[[clas]]` section in the BPA config file (`configs/hardy.toml` or
-`configs/hardy-mem.toml`).
+> ⚠️ When using standalone TCPCL, you **must** do both of the following
+> or the services will conflict on port 4556:
+>
+> 1. Comment out the `[[clas]]` section in the BPA config (`configs/hardy/hardy.toml`
+>    or `configs/hardy/hardy-mem.toml`)
+> 2. Comment out the `4556:4556` port mapping on the `hardy` service in the compose file
+>
+> Alternatively, change the standalone TCPCL to a different port (e.g. `4557:4556`)
+> to run both CLAs side by side.
 
 ## Ports
 
-| Port  | Service                                     |
-| ----- | ------------------------------------------- |
-| 50051 | BPA gRPC API                                |
-| 4556  | Embedded TCPCLv4                            |
-| 4557  | Standalone TCPCLv4 (with `--profile tcpcl`) |
-| 3000  | Grafana                                     |
-| 9090  | Prometheus                                  |
-| 4317  | OTLP gRPC (OpenTelemetry Collector)         |
-| 9000  | MinIO S3 API (`compose.yml` only)           |
-| 9001  | MinIO Console (`compose.yml` only)          |
+| Port  | Service                                   |
+| ----- | ----------------------------------------- |
+| 50051 | BPA gRPC API                              |
+| 4556  | TCPCLv4 (embedded or standalone)          |
+| 3000  | Grafana                                   |
+| 4317  | OTLP gRPC (OpenTelemetry Collector)       |
+| 9000  | MinIO S3 API (`compose.yml` only)         |
+| 9001  | MinIO Console (`compose.yml` only)        |
 
 ## Observability
 
@@ -73,9 +77,15 @@ reasons, filter activity, cache performance, and infrastructure gauges.
 
 ```
 configs/
-  hardy.toml         # BPA + embedded TCPCL + S3/PostgreSQL
-  hardy-mem.toml     # BPA + embedded TCPCL + in-memory
-  hardy-tcpcl.toml   # Standalone TCPCLv4 server
+  hardy/
+    hardy.toml       # BPA + embedded TCPCL + S3/PostgreSQL
+    hardy-mem.toml   # BPA + embedded TCPCL + in-memory
+  tcpcl/
+    tcpcl.toml       # Standalone TCPCLv4 server
+  otel/
+    otel-collector.yml
+  prometheus/
+    prometheus.yml
 ```
 
 ## Volumes
