@@ -28,7 +28,7 @@ services:
     profiles: [tcpcl]
     restart: unless-stopped
     ports:
-      - "4557:4556"
+      - "4556:4556"
     environment:
       OTEL_EXPORTER_OTLP_ENDPOINT: http://otel-collector:4317
     volumes:
