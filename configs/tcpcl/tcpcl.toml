@@ -1,12 +1,9 @@
 # Standalone TCPCL v4 server — connects to BPA via gRPC
+#
+# Every TCPCLv4 setting is left at its default: one listener on
+# [::]:4556, plaintext. See Hardy's convergence-layers configuration guide
+# for the settings and where they go.
 
 bpa-address = "http://hardy:50051"
 cla-name = "tcp-cla-2"
 log-level = "info"
-address = "[::]:4556"
-segment-mru = 16384
-transfer-mru = 562949953421312
-max-idle-connections = 6
-contact-timeout = 15
-keepalive-interval = 60
-require-tls = false

@@ -8,6 +8,12 @@ status-reports = true
 address = "[::]:50051"
 services = ["application", "cla", "service"]
 
+[storage.metadata]
+type = "memory"
+
+[storage.bundle]
+type = "memory"
+
 [rfc9171-validity]
 primary-block-integrity = true
 bundle-age-required = true
@@ -18,10 +24,9 @@ echo = [7, "echo"]
 [[clas]]
 name = "tcp-cla-1"
 type = "tcpclv4"
-address = "[::]:4556"
+listeners = ["[::]:4556"]
 segment-mru = 16384
 transfer-mru = 562949953421312
 max-idle-connections = 6
 contact-timeout = 15
 keepalive-interval = 60
-require-tls = false
